@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学IT - 后台管理系统</title>
+    <?php include('./views/common/style.html') ?>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <?php include('./views/common/aside.html') ?>
+    <!-- 主体 -->
+    <div class="main">
+        <div class="container-fluid">
+            <!-- 头部 -->
+            <?php include('./views/common/header.html') ?>
+            <div class="body course-category" id="category">
+                <!-- 面包屑 -->
+                <!-- <ol class="breadcrumb">
+                    <li><a href="javascript:;">课程管理</a></li>
+                    <li class="active">课程分类</li>
+                </ol>
+                <div class="category-add">
+                    <form action="/category/list" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="" class="col-md-4 control-label">名称</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control input-sm" placeholder="填写分类名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-md-4 control-label">级别</label>
+                            <div class="col-md-2">
+                                <select name="" class="form-control input-sm">
+                                    <option value="">顶级分类</option>
+                                    <option value="">前端开发</option>
+                                    <option value="">后端开发</option>
+                                    <option value="">数据库</option>
+                                    <option value="">云计算&大数据</option>
+                                    <option value="">视觉设计</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-md-4 control-label">排序</label>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control input-sm" value="10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-md-4 control-label">是否显示</label>
+                            <div class="col-md-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" checked> 是
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"> 否
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <input type="submit" class="btn btn-success btn-sm pull-right" value="保存">
+                            </div>                          
+                        </div>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <script type="text/template" id="tpl">
+        <!-- 面包屑 -->
+        <ol class="breadcrumb">
+            <li><a href="javascript:;">课程管理</a></li>
+            <li class="active">{{ active }}</li>
+        </ol>
+        <div class="category-add">
+            <form action="/api/category/{{ if cg_id }}modify{{ else }}add{{ /if }}" class="form-horizontal">
+                {{ if cg_id }}
+                <input type="hidden" name="cg_id" value="{{cg_id}}">
+                {{ /if }}
+                <div class="form-group">
+                    <label for="" class="col-xs-4 control-label">名称</label>
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control input-sm" name="cg_name" value="{{ cg_name }}" placeholder="填写分类名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-xs-4 control-label">级别</label>
+                    <div class="col-xs-2">
+                        <select name="cg_pid" class="form-control input-sm">
+                            <option value="0">顶级分类</option>
+                            {{ each top }}
+                            {{ if $value.cg_id == cg_pid }}
+                            <option value="{{ $value.cg_id }}" selected>
+                            {{ else }}
+                            <option value="{{ $value.cg_id }}">
+                            {{ /if }}
+                                {{ $value.cg_name }}
+                            </option>
+                            {{ /each }}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-xs-4 control-label">排序</label>
+                    <div class="col-xs-1">
+                        <input type="text" class="form-control input-sm" name="cg_order" value="{{ cg_order }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-xs-4 control-label">是否显示</label>
+                    <div class="col-xs-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" {{ if !cg_is_hide }}checked{{ /if }} name="cg_is_hide" value="0"> 是
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" {{ if cg_is_hide }}checked{{ /if }} name="cg_is_hide" value="1"> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-8">
+                        <button type="submit" class="btn btn-success btn-sm pull-right"> 保 存 </button>
+                    </div>                          
+                </div>
+            </form>
+        </div>
+    </script>
+    <?php include('./views/common/script.html') ?>
+    <script type="text/javascript">
+        require(['js/category']);
+    </script>
+</body>
+</html>

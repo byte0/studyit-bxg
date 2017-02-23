@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学IT - 后台管理系统</title>
+    <?php include('./views/common/style.html') ?>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <?php include('./views/common/aside.html') ?>
+    <!-- 主体 -->
+    <div class="main">
+        <div class="container-fluid">
+            <!-- 头部 -->
+            <?php include('./views/common/header.html') ?>
+            <div class="body course-add">
+                <!-- 面包屑 -->
+                <ol class="breadcrumb">
+                    <li><a href="javascript:;">课程管理</a></li>
+                    <li class="active">课程添加</li>
+                </ol>
+                <div class="steps" id="lesson">
+                    <!-- 填充模板 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 模态框 添加课程 -->
+    <div class="modal fade" id="chapterModal">
+        <div class="modal-dialog" style="width: 800px;">
+            <div class="modal-content">
+                <!-- 挖个坑，一会儿填 -->
+            </div>
+        </div>
+    </div>
+    <!-- 添加课程子模板 -->
+    <script type="text/template" id="modalTpl">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{{ title }}</h4>
+        </div>
+        <div class="modal-body">
+            <form action="{{ action }}" id="chapterForm" class="form-horizontal">
+                <input type="hidden" name="ct_cs_id" value="{{ ct_cs_id }}">
+                {{ if ct_id }}
+                <input type="hidden" name="ct_id" value="{{ ct_id }}">
+                {{ /if }}
+                <div class="form-group">
+                    <label for="" class="col-xs-2 control-label">标题</label>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control input-sm" name="ct_name" value="{{ ct_name }}">
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="checkbox">
+                            <label>
+                                {{ if ct_is_free == 0 }}
+                                <input type="checkbox" class="is_free"> 免费课时
+                                {{ else }}
+                                <input type="checkbox" class="is_free" checked> 免费课时
+                                {{ /if }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-xs-2 control-label">简介</label>
+                    <div class="col-xs-8">
+                        <textarea name="" rows="5" class="form-control input-sm" name="ct_brief">{{ ct_brief }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-xs-2 control-label">视频</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm" name="ct_video" value="{{ ct_video }}" placeholder="支持优酷、土豆、腾讯、网易公开课的视频页面地址导入">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success btn-sm">获取</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="" class="col-xs-2 control-label">时长</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control input-sm small" name="ct_minutes" value="{{ ct_minutes }}">
+                        分
+                        <input type="text" class="form-control input-sm small" name="ct_seconds" value="{{ ct_seconds }}">
+                        秒
+                         <p class="help-block">时长必须为整数。</p>
+                    </div>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="" class="col-xs-2 control-label">建议学习时长</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control input-sm small" name="ct_recommend_duration" value="{{ ct_recommend_duration }}">
+                        小时
+                         <p class="help-block">（如未设置，则默认学习时长为视频时长3倍取整。）</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-link btn-sm" data-dismiss="modal"> 取 消 </button>
+            <button type="submit" form="chapterForm" class="btn btn-success btn-sm"> 添 加 </button>
+        </div>
+    </script>
+    <!-- lesson模板 -->
+    <script type="text/template" id="lessonTpl">
+        <!-- 摘要 -->
+        <div class="brief">
+            <div class="thumb">
+                <img src="{{ cs_cover }}">
+            </div>
+            <dl class="info">
+                <dt>{{ cs_name }}</dt>
+                <dd>讲师：{{ tc_name }}</dd>
+                <dd>课时：{{ lessons.length }}</dd>
+            </dl>
+        </div>
+        <!-- 步聚 -->
+        <ul class="forwards list-unstyled">
+            <li>
+                <a href="/course/basic?cs_id={{ cs_id }}" class="done">
+                <b class="fa fa-check"></b>
+                基本信息
+                </a>
+            </li>
+            <li>
+                <a href="/course/picture?cs_id={{ cs_id }}" class="done">
+                <b class="fa fa-check"></b>
+                课程图片
+                </a>
+            </li>
+            <li>
+                <a href="/course/lesson?cs_id={{ cs_id }}" class="active">
+                <b>3</b>
+                课时管理
+                </a>
+            </li>
+        </ul>
+        <!-- 课时管理 -->
+        <div class="content">
+            <!-- 标题 -->
+            <div class="title">
+                <h5>课时管理 <small>LESSON MANAGE</small></h5>
+                <a src="javascript:;" class="btn btn-success btn-sm pull-right add">
+                    <i class="fa fa-plus"></i>
+                    课时
+                </a>
+            </div>
+            <div class="lessons">
+                <ul class="list-unstyled">
+                    {{include 'listTpl'}}
+                </ul>
+            </div>
+        </div>
+    </script>
+    <!-- lesson子模板-课时列表 -->
+    <script type="text/template" id="listTpl">
+        {{ each lessons }}
+        <li>
+            <i class="fa fa-file-video-o"></i>
+            <span class="order">课时：{{ $index+1 }}</span>
+            <span class="name">{{ $value.ct_name }}</span>
+            <span class="duration">{{ $value.ct_video_duration }}</span>
+            <!-- 操作 -->
+            <div class="action pull-right" data-id="{{ $value.ct_id }}">
+                <a href="javascript:;" class="btn btn-info btn-xs edit">编辑</a>
+                <a href="javascript:;" class="btn btn-info btn-xs preview">预览</a>
+                <a href="javascript:;" class="btn btn-danger btn-xs delete">删除</a>
+            </div>
+        </li>
+        {{ /each }}
+    </script>
+
+    <?php include('./views/common/script.html') ?>
+    <script type="text/javascript">
+        require(['js/course-lesson']);
+    </script>
+</body>
+</html>

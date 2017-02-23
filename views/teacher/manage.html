@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>学IT - 后台管理系统</title>
+    <?php include('./views/common/style.html') ?>
+        <link rel="stylesheet" href="/public/assets/bootstrap-datepicker/css/bootstrap-datepicker.css">
+</head>
+
+<body>
+    <!-- 侧边栏 -->
+    <?php include('./views/common/aside.html') ?>
+        <!-- 主体 -->
+        <div class="main">
+            <div class="container-fluid">
+                <!-- 头部 -->
+                <?php include('./views/common/header.html') ?>
+                    <div class="body teacher" id="teacher">
+                        <!-- 面包屑 -->
+                    </div>
+            </div>
+        </div>
+        <script type="text/template" id="teacherTpl">
+            <ol class="breadcrumb">
+                <li><a href="javascript:;">讲师管理</a></li>
+                <li class="active">{{title}}</li>
+            </ol>
+            <div class="teacher-add">
+                <form action="" id="teacherForm" class="form-horizontal col-md-offset-2">
+                    <div class="form-group">
+                        {{if tc_id}}
+                        <input type="hidden" name="tc_id" value="{{tc_id}}">
+                        {{/if}}
+                        <label for="" class="col-md-3 control-label">姓名</label>
+                        <div class="col-md-4">
+                            <input type="text" data-description='tcName' data-describedby='tcName' data-required name="tc_name" class="form-control input-sm" value="{{tc_name}}" placeholder="讲师名称">
+                        </div>
+                        <div class="col-md-2" id="tcName"></div>
+                    </div>
+                    {{if !tc_id}}
+                    <div class="form-group">
+                        <label for="" class="col-md-3 control-label">密码</label>
+                        <div class="col-md-4">
+                            <input data-required data-description='tcPass' data-describedby='tcPass' name="tc_pass" type="password" class="form-control input-sm">
+                        </div>
+                        <div class="col-md-2" id="tcPass"></div>
+                    </div>
+                    {{/if}}
+                    <div class="form-group">
+                        <label for="" class="col-md-3 control-label">入职时间</label>
+                        <div class="col-md-4">
+                            <input name="tc_join_date" data-required value="{{ tc_join_date }}" data-description='tcJoindate' data-describedby='tcJoindate' type="text" class="form-control input-sm" data-provide='datepicker' data-date-language='zh-CN' data-date-format='yyyy-mm-dd' data-date-end-date='0d'>
+                        </div>
+                        <div class="col-md-2" id="tcJoindate"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-md-3 control-label">类型</label>
+                        <div class="col-md-2">
+                            <select name="tc_type" class="form-control input-sm">
+                                <option value="1" {{if tc_type ==1 }} selected {{/if}}>讲师</option>
+                                <option value="0" {{if tc_type ==0 }} selected {{/if}}>管理员</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-md-3 control-label">性别</label>
+                        <div class="col-md-4">
+                            <label class="radio-inline">
+                                <input name="tc_gender" type="radio" value="0"  {{if tc_gender == 0 }} checked {{/if}}> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input name="tc_gender" type="radio" value="1"  {{if tc_type == 1 }} checked {{/if}}> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-7">
+                            <input type="submit" class="btn btn-success btn-sm pull-right" value="添 加">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </script>
+        <?php include('./views/common/script.html') ?>
+            <script type="text/javascript">
+            require(['js/teacher']);
+            </script>
+</body>
+
+</html>
