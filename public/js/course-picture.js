@@ -111,7 +111,7 @@ define(['jquery', 'utils', 'template', 'uploadify', 'jcrop', 'form'], function (
                     uploader: '/api/uploader/cover',
                     fileSizeLimit: '2MB',
                     fileTypeExts: '*.jpg; *.gif; *.png',
-                    swf: '/public/assets/uploadify/uploadify.swf',
+                    swf: '/public/assets/jquery-uploadify/uploadify.swf',
                     onUploadSuccess: function (file, data) {
 
                         var data = JSON.parse(data);
